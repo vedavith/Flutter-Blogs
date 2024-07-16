@@ -1,11 +1,26 @@
-import 'package:avrs_ca/view/login/LoginView.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:vani_ashok_blogs/view/login/LoginView.dart';
+
+/// Notifiers
+import 'package:vani_ashok_blogs/notifiers/UserNotifier.dart';
+
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(
+    MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => UserNotifier())
+        ], 
+        child: const MyApp()
+    ),
+  );
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -14,13 +29,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'AVRS',
+        title: 'Vani Ashok Blogs',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.red, brightness: Brightness.light),
           useMaterial3: true,
         ),
-        // home: const MyHomePage(title: 'AVRS CA'),
         home: const LoginView());
   }
 }

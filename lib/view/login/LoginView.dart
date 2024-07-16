@@ -1,8 +1,12 @@
-import 'package:avrs_ca/controller/login/LoginController.dart';
-import 'package:avrs_ca/model/login/LoginModel.dart';
+import 'package:provider/provider.dart';
+import 'package:vani_ashok_blogs/controller/login/LoginController.dart';
+import 'package:vani_ashok_blogs/model/login/LoginModel.dart';
+import 'package:vani_ashok_blogs/view/home/HomeView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import '../../notifiers/UserNotifier.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -28,7 +32,13 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
-      body: Center(
+      body: Container(
+        constraints: BoxConstraints.expand(
+          height: Theme.of(context).textTheme.headlineMedium!.fontSize! * 5.0 + 200.0,
+        ),
+        padding: const EdgeInsets.all(10),
+        // color: Colors.blue[600],
+        alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -46,12 +56,20 @@ class _LoginViewState extends State<LoginView> {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   bool isValid =
-                      validateLogin(usernameController, passwordController);
+                  await validateLogin(usernameController, passwordController);
                   if (!isValid) {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Invalid Details")));
+                  } else {
+                    // Calling Provider
+                    Provider.of<UserNotifier>(context, listen: false);
+                    //Navigate to home
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeView())
+                    );
                   }
                 },
                 child: const Text('Login')),
@@ -62,12 +80,12 @@ class _LoginViewState extends State<LoginView> {
   }
 
   validateLogin(
-      TextEditingController username, TextEditingController password) {
+      TextEditingController username, TextEditingController password) async {
     if (username.text == '' || password.text == '') {
       return false;
     }
     final LoginModel userDetails =
-        LoginModel(usermail: username.text, password: password.text);
-    return loginController.loginValidation(userDetails);
+    LoginModel(username: username.text, password: password.text);
+    return await loginController.loginValidation(userDetails);
   }
 }
