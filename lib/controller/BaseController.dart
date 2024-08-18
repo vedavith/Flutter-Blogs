@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -21,10 +20,18 @@ class BaseController {
     }
   }
 
-// Future<http.Response> doGet(handle)
-// {
+Future<dynamic> doGet(String handle) async {
+  final response = await http.get(Uri.parse(api + handle),
+    headers: <String,String>{
+    'Content-Type': 'application/json;charset=UTF-8'
+    });
 
-// }
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    return jsonEncode({'error': 'Get Failed', 'statusCode': response.statusCode});
+  }
+}
 
 // Future<http.Response> doPut()
 // {

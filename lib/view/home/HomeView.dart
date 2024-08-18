@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,10 +22,14 @@ class _HomeViewState extends State<HomeView> {
           Expanded(
             child: Consumer<UserNotifier>(
               builder: (context, userNotifier, child) {
+                final users = userNotifier.users;
                return ListView.builder(
+                 itemCount: users.length,
                  itemBuilder: (BuildContext context, int index) {
+                   final user = users[index];
                    return ListTile(
-                     title: Text(userNotifier.accessToken)
+                     title: Text(user.name),
+                     subtitle: Text(user.email),
                    );
                  });
               }),

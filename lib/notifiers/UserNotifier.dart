@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../model/login/UserModel.dart';
 
 class UserNotifier extends ChangeNotifier {
+
+  List<UserModel> _users = [];
+
+  List<UserModel> get users => _users;
 
   late String _email = '';
 
@@ -21,13 +24,17 @@ class UserNotifier extends ChangeNotifier {
 
   String get accessToken => _accessToken;
 
-  bool setUserData(UserModel model) {
+  void setUserData(UserModel model) {
     _email = model.email;
-    _id = model.id;
+    _id = model.userId;
     _accessToken = model.accessToken;
     _name = model.name;
     notifyListeners();
-    return true;
+  }
+
+  void setUsers(List<UserModel> newUsers) {
+    _users = newUsers;
+    notifyListeners();
   }
 
   void logout() {
