@@ -155,18 +155,41 @@ class _LoginViewState extends State<LoginView> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    blog.title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  // Image or other widget on the left
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.network(
+                      "https://fastly.picsum.photos/id/230/200/200.jpg?hmac=8tI9ISupCMivMI7f7Q6i24FcYAg812XUEYJFZtaXp_8", // Replace with your image URL or widget
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(blog.content),
+                  SizedBox(width: 15.0),
+                  // Title and content on the right
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          blog.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          blog.content,
+                          maxLines: 3, // Limit the number of lines if necessary
+                          overflow: TextOverflow.ellipsis, // Handle overflow
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
